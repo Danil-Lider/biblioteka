@@ -17,7 +17,12 @@ class BookFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => fake()->firstName(),
+            'genre' =>  fake()->name(),
+            'author' =>  fake()->name(),
+            'publisher' =>  fake()->name(), // password
+            'created_at' =>  now(),
+            'status' =>  1,
         ];
     }
 }
