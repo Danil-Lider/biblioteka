@@ -4,6 +4,7 @@
 1. Composer install 
 2.  alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
 3.  sail up -d
+4.  copy file .env
 
 
 
