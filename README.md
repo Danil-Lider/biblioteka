@@ -2,7 +2,8 @@
 Установка 
 
 1. Composer install 
-2. 
+2.  alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
+3.  sail up -d
 
 
 
