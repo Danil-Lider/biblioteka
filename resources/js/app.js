@@ -1,7 +1,14 @@
+
 import './bootstrap';
+import { createApp } from 'vue';
 
-import Alpine from 'alpinejs';
 
-window.Alpine = Alpine;
+ import CatalogIndexComponent from './components/CatalogIndexComponent.vue';
 
-Alpine.start();
+const app = createApp({
+    components: {
+        CatalogIndexComponent
+    }
+});
+
+app.mount('#app');
