@@ -89,7 +89,7 @@ services:
             - sail
     phpmyadmin:
         image: phpmyadmin:latest
-        container_name: phpmyadmin
+        container_name: phpmyadminmain
         restart: always
         ports:
         - 8085:80

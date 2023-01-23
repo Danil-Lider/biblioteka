@@ -18,17 +18,17 @@
         </div>
 
         <nav aria-label="Page navigation example">
-            <ul class="pagination">
+            <ul  v-if="data.links"  class="pagination">
 
-                <div v-if="item.url"  v-for="item in data.links" >
-                    <div v-if="item.active">
+                <div  v-for="link in data.links" >
+                    <div v-if="link.active">
                         <li class="page-item active">
-                            <a class="page-link" :href="item.url">{{ item.label }}</a>
+                            <a class="page-link" :href="link.url">{{ link.label }}</a>
                         </li>
                     </div>
                     <div v-else>
                         <li class="page-item">
-                            <a class="page-link" :href="item.url">{{ item.label }}</a>
+                            <a class="page-link" :href="link.url">{{ link.label }}</a>
                         </li>
                     </div>
                 </div>
