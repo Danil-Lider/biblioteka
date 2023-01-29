@@ -1,6 +1,9 @@
 <template>
     <div class="container">
 
+
+        <b-calendar v-model="value" :min="min" :max="max" locale="ru"></b-calendar>
+
         <div class="card-deck">
             <div v-for="item in data.data" class="card">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvGw-65vEUR3k8s60dEUFY_lHgAKxXMd-3uA&usqp=CAU" class="card-img-top" alt="...">
@@ -12,7 +15,7 @@
                 </div>
                 <div class="card-footer">
                     <small class="text-muted">Last updated 3 mins ago</small>
-                    <a href="#" class="btn btn-primary">Забронировать</a>
+                    <div v-on:click="orderItem(item)" href="#" class="btn btn-primary">1 Забронировать</div>
                 </div>
             </div>
         </div>
@@ -21,16 +24,19 @@
             <ul  v-if="data.links"  class="pagination">
 
                 <div  v-for="link in data.links" >
+
                     <div v-if="link.active">
                         <li class="page-item active">
                             <a class="page-link" :href="link.url">{{ link.label }}</a>
                         </li>
                     </div>
+
                     <div v-else>
                         <li class="page-item">
                             <a class="page-link" :href="link.url">{{ link.label }}</a>
                         </li>
                     </div>
+                    
                 </div>
             
             </ul>
@@ -41,10 +47,16 @@
 </template>
 
 <script>
+    // import *  from 'bootstrap-vue';
     export default {
         props: ['data'],
         mounted() {
-            console.log(this.data)
+            // console.log(this.data)
+        },
+        methods: {
+            orderItem : function(item){
+                console.log(item)
+            }
         }
     }
 </script>

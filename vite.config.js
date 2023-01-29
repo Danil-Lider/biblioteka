@@ -22,7 +22,12 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            vue: 'vue/dist/vue.esm-bundler.js',
+            // bootstrapVue:'bootstrap-vue/dist/bootstrap-vue.esm.js',
+            Vue: 'vue/dist/vue.esm-bundler.js',
+            alpine : 'alpinejs/dist/module.esm.js',
+            // bootstrapVue: 'bootstrap-vue/src/index.js',
+    
         },
+        
     },
 });
