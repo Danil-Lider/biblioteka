@@ -4,7 +4,7 @@ import vue from '@vitejs/plugin-vue';
  
 export default defineConfig({
     plugins: [
-        laravel(['resources/js/app.js']),
+        laravel(['resources/js/app.js', 'resources/css/app.css']),
         vue({
             template: {
                 transformAssetUrls: {
@@ -20,11 +20,10 @@ export default defineConfig({
                     // `false` will leave absolute URLs un-touched so they can
                     // reference assets in the public directory as expected.
                     includeAbsolute: false,
+                    
                 },
             },
         }),
+        
     ],
-    alias:{
-        vue : 'vue/dist/vue.esm-bundler.js',
-    }
 });

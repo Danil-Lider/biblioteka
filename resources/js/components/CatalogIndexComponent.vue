@@ -1,8 +1,9 @@
 <template>
     <div class="container">
 
-        <!-- <Datepicker v-model="date" /> -->
 
+        <Datepicker  @update:modelValue="handleDate" locale="ru" :min-date="new Date()" range v-model="MainDate"></Datepicker>
+        
         <div class="card-deck">
             <div v-for="item in data.data" class="card">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvGw-65vEUR3k8s60dEUFY_lHgAKxXMd-3uA&usqp=CAU" class="card-img-top" alt="...">
@@ -46,16 +47,34 @@
 </template>
 
 <script>
+
+    import Datepicker from '@vuepic/vue-datepicker';
+    import '@vuepic/vue-datepicker/dist/main.css'
+    // import { ref } from 'vue';
+
     export default {
+        components: { Datepicker },
+        data() {
+            return {
+                MainDate: null,
+                // datepickermain: ref(null)
+            };
+        },
         props: ['data'],
         mounted() {
             // console.log(this.data)
         },
         methods: {
             orderItem : function(item){
-                console.log(item)
+
+                // console.log(this.MainDate)
+
+            },
+            handleDate:  (modelData) => {
+                console.log(modelData)
             }
-        }
+            
+        },
     }
 </script>
 
