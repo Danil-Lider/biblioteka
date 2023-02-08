@@ -2,10 +2,9 @@ import { createApp } from "vue/dist/vue.esm-bundler.js";
 
 import alpine from "alpinejs";
 
+import './bootstrap';
 
-// import { Calendar } from "vue-calendar-3";
-// If you using vite
-// import "vue-calendar-3/style";
+import '../sass/app.scss'
 
 
 window.alpine = alpine;
@@ -28,4 +27,3 @@ const app = {
 
 createApp(app).mount('#app')
 
-// app.mount('#app');

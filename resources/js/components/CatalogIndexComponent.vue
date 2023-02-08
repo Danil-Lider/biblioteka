@@ -1,6 +1,12 @@
 <template>
     <div class="container">
 
+        <div v-if="error">
+            <Erorr v-bind:data="error"></Erorr>
+        </div>
+
+       
+
 
         <Datepicker  @update:modelValue="handleDate" locale="ru" :min-date="new Date()" range v-model="MainDate"></Datepicker>
         
@@ -47,31 +53,47 @@
 </template>
 
 <script>
+    import axios from 'axios';
 
     import Datepicker from '@vuepic/vue-datepicker';
     import '@vuepic/vue-datepicker/dist/main.css'
-    // import { ref } from 'vue';
+
+    import Erorr from './ErrorComponent.vue';
+
 
     export default {
-        components: { Datepicker },
+        components: { Datepicker, Erorr },
         data() {
             return {
                 MainDate: null,
-                // datepickermain: ref(null)
-            };
+                error: null,
+            }
         },
         props: ['data'],
         mounted() {
-            // console.log(this.data)
         },
         methods: {
             orderItem : function(item){
 
-                // console.log(this.MainDate)
+                axios.post('http://localhost:8080/books', {
+
+                    data: item
+
+                }).then(response => {
+
+                    console.log(response);
+
+                }).catch(error => {
+
+                    this.error = error;
+                    // console.log(error);
+
+                });
+
 
             },
             handleDate:  (modelData) => {
-                console.log(modelData)
+                // console.log(modelData)
             }
             
         },
