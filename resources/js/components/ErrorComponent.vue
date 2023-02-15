@@ -28,18 +28,30 @@
 
 <script>
 
-    // setTimeout(() => {
-    //     var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
-    //         keyboard: false,
-    //         backdrop: true
-    //     })
-    // }, 2000)
-
+import * as bootstrap from 'bootstrap'
 
 export default {
-    props: ['data'],
+  props: ['data', 'error_show'],
+  data(){
+    return {
+      modal: null,
+    }
+  },
+  updated() {
+    this.toggleModal();
+  },
+  methods: {
+    getModal: function(){
+      if (!this.modal) {
+        this.modal = new bootstrap.Modal('#myModal');   
+      }
+      return this.modal
+    },
+    toggleModal: function(){
+      this.getModal().show()
+    },
+  }
 }
-
 
 </script>
 

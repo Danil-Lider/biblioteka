@@ -1,8 +1,8 @@
 <template>
     <div class="container">
 
-        <div v-if="error">
-            <Erorr v-bind:data="error"></Erorr>
+        <div>
+            <Erorr v-bind:error_show="error_show" v-bind:data="error"></Erorr>
         </div>
 
        
@@ -54,7 +54,6 @@
 
 <script>
     import axios from 'axios';
-
     import Datepicker from '@vuepic/vue-datepicker';
     import '@vuepic/vue-datepicker/dist/main.css'
 
@@ -66,7 +65,8 @@
         data() {
             return {
                 MainDate: null,
-                error: null,
+                error: 'test',
+                error_show: 0,
             }
         },
         props: ['data'],
@@ -85,15 +85,18 @@
 
                 }).catch(error => {
 
+                    // this.callMethodInParentComponent();
+
                     this.error = error;
-                    // console.log(error);
+
+                    this.error_show = 1;
+                    console.log('Ошибка есть ')
+                    console.log(error);
 
                 });
 
-
             },
             handleDate:  (modelData) => {
-                // console.log(modelData)
             }
             
         },
