@@ -10,6 +10,8 @@ use App\Models\Book;
 
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\DB;
+
 // use App\Models\Book;
 
 class OrderBookController extends Controller
@@ -21,8 +23,20 @@ class OrderBookController extends Controller
      */
     public function index(Request $request)
     {
-        // dd($request);
-        echo json_encode($request);
+     
+
+        $user_id = Auth::id();
+       
+        $data = DB::table('order_books')
+        ->join('books', 'books.id', '=', 'order_books.book_id')
+        ->select('books.*', 'order_books.start_to_book','order_books.end_to_book')
+        ->where('user_id', $user_id)
+        ->paginate(10);
+
+        // dd($data);
+
+        return view('vue/orders', compact('data'));
+
     }
 
     /**
@@ -83,7 +97,7 @@ class OrderBookController extends Controller
 
 
             // return response('Уже есть в базе данных.', 402);
-            return json_encode(" Уже в базе данных");
+            return json_encode("К сожалению, книга уже забронирована    ");
 
         }
 

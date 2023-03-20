@@ -15,6 +15,8 @@ alpine.start();
 
 import CatalogIndexComponent from './components/CatalogIndexComponent.vue';
 
+import CatalogOrdersComponent from './components/CatalogOrdersComponent.vue';
+
 
 
 // createApp(App).use(store).mount('#app')
@@ -22,6 +24,7 @@ import CatalogIndexComponent from './components/CatalogIndexComponent.vue';
 const app = {
     components: {
         CatalogIndexComponent,
+        CatalogOrdersComponent
         // Calendar
     }
 };

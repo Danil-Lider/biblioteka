@@ -11,30 +11,40 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
 
-        <div>Выберите дату </div>   
+    <div v-if="success">
+        <div class="p-3  bg-success text-white">
+            {{ success  }}
+        </div>
+    </div>
+    <div v-else>
+        <div class="modal-body">
 
-        <Datepicker  v-model="date_datepicker" @update:modelValue="handleDate" locale="ru" :min-date="new Date()" range  ></Datepicker>
+            <div>Выберите дату </div>   
 
-        <!-- {{ item }} -->
+            <Datepicker  v-model="date_datepicker" @update:modelValue="handleDate" locale="ru" :min-date="new Date()" range  ></Datepicker>
 
-        <label>
-            Автор книги:   {{ item.author }}
-        </label>
+            <!-- {{ item }} -->
+
+            <label>
+                Автор книги:   {{ item.author }}
+            </label>
 
 
-        <div  class="p-3 mb-2 bg-danger text-white" v-if="error">
-          {{ error }}
-        </div>  
+            <div  class="p-3 mb-2 bg-danger text-white" v-if="error">
+            {{ error }}
+            </div>  
 
-      </div>
-      <div class="modal-footer">
+        </div>
+        <div class="modal-footer">
 
-        <button  v-on:click="orderItem(item)" type="button" class="btn btn-secondary" data-dismiss="modal">Забронировать</button>
+            <button  v-on:click="orderItem(item)" type="button" class="btn btn-secondary" data-dismiss="modal">Забронировать</button>
 
-        <button  v-on:click="toggleModal(true)" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
+            <button  v-on:click="toggleModal(true)" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+
+
     </div>
   </div>
 </div>
@@ -60,12 +70,12 @@ export default {
       modelData: null,
       item: null,
       error: null,
+      success: null
     }
   },
   updated() {
-    // console.log('updated')
     this.toggleModal();
-
+    // this.success = null;
   },
   methods: {
 
@@ -79,10 +89,38 @@ export default {
       }
 
       if(item.end_to_book){
-        this.$emit('orderItem', item);
+
+        axios.post('http://localhost:8080/books', {
+
+          data: item
+
+        }).then(response => {
+
+          console.log(response);
+
+            // console.log()
+
+            this.error = null;
+
+            if(Number.isInteger(response.data.id)){
+                this.success = 'Успешно забронировано';
+            }else{
+                this.success = null
+                this.error = response.data
+            }
+
+        }).catch(error => {
+
+          this.error = error;
+
+        });
+
         this.error = null;
+
       }else{
+
         this.error = 'Нужно выбрать 2 даты !';
+
       }
     },
 

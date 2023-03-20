@@ -42,3 +42,6 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
+
+Route::get('/orders', [OrderBookController::class, 'index']);
+

@@ -14,14 +14,8 @@ class BookController extends Controller
      */
     public function index()
     {
-        // dd(Book::all());
-
-        // $data = Book::all();
-
 
         $data = Book::paginate(10, ['*'], 'page');
-
-        // dd($paginate);
 
         return view('vue/index', compact('data'));
     }

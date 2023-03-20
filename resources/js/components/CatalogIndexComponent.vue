@@ -7,14 +7,14 @@
 
         <div>
             <!-- v-bind:item="item" -->
-            <OrderItem @orderItem='orderItemIndex' ref="OrderItemChildComponent"></OrderItem>
+            <OrderItem ref="OrderItemChildComponent"></OrderItem>
         </div>
 
         <div>
             <ItemsComponent @orderItem='showModalBeforeOrder' ref="ItemsChildComponent" v-bind:data="data"></ItemsComponent>  
         </div>
 
-        <div>
+        <div v-if="data.links"> 
             <NavigationComponent v-bind:links="data.links"></NavigationComponent>
         </div>
 
@@ -52,29 +52,7 @@
             // 2. SHOW MODAL WITH DATEPICKER ON CHILD
             showModalFromCatalog: function (item){
                 this.$refs.OrderItemChildComponent.showModal(item);
-            },
-            // 3. ORDER ITEM IF WE HAVE DATE ON DATEPICKER,  
-            orderItemIndex : function(item){
-
-                axios.post('http://localhost:8080/books', {
-
-                    data: item
-
-                }).then(response => {
-
-                    console.log(response);
-
-
-                    this.error = null;
-
-                }).catch(error => {
-
-                    this.error = error;
-
-                });
-
-            },
-            
+            }
         },
     }
 </script>
