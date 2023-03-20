@@ -3,19 +3,18 @@
 
 <div id="myModal" class="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div v-if="data" class="modal-content" >
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
+        <h5 class="modal-title">{{ data.name }}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <p>Modal body text goes here.</p>
+        <p> {{ data.response.statusText }} : {{ data.message }}</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Save changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button  v-on:click="toggleModal(true)" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -31,24 +30,34 @@
 import * as bootstrap from 'bootstrap'
 
 export default {
-  props: ['data', 'error_show'],
+
+  props: ['data'],
   data(){
     return {
       modal: null,
     }
   },
   updated() {
+
+    // console.log(this.data)
+
     this.toggleModal();
   },
   methods: {
     getModal: function(){
-      if (!this.modal) {
-        this.modal = new bootstrap.Modal('#myModal');   
-      }
-      return this.modal
+        if (!this.modal) {
+            this.modal = new bootstrap.Modal('#myModal');   
+        }
+        return this.modal
     },
-    toggleModal: function(){
-      this.getModal().show()
+    toggleModal: function(close=false){
+
+        if(close){
+            this.getModal().hide()
+        }else {
+            this.getModal().show()
+        }
+
     },
   }
 }
@@ -56,5 +65,3 @@ export default {
 </script>
 
 
-<style>
-</style>

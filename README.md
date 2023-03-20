@@ -6,6 +6,12 @@
 3.  sail up -d
 4.  copy file .env
 
+Start is 
+
+1. vendor/bin/sail up -d
+2. if it is local, starting:  npm run dev
+
+http://localhost:8080/
 
 
 

@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 
 use App\Models\order_books;
 
+use App\Models\Book;
+
+use Illuminate\Support\Facades\Auth;
+
+// use App\Models\Book;
+
 class OrderBookController extends Controller
 {
     /**
@@ -43,24 +49,40 @@ class OrderBookController extends Controller
 
         if(empty($in_database)){
 
-            $order_book = new order_books;   
+            $book = Book::where('id', $item_id)->first();
 
-            $order_book->book_id = $item_id;
+            if(!empty($request->data['end_to_book']) && Auth::check()){
+                
+                $start_to_book = $request->data['start_to_book'];
+                $end_to_book = $request->data['end_to_book'];
+                $user_id = Auth::id();
 
-            $order_book->user_id = 1;
+                $order_book = new order_books;   
 
-            $order_book->start_to_book = date('Y-m-d H:i:s');
+                $order_book->book_id = $item_id;
+    
+                $order_book->user_id = $user_id;
 
-            $order_book->end_to_book = date('Y-m-d H:i:s');
+                // ДОБАВЛЯЕМ 3 часа, т.к в базу попадает на 3 часа меньше, скорее всего как то сервак меняет.
+    
+                $order_book->start_to_book = date("Y-m-d H:i:s", (strtotime ($start_to_book) + 60 * 60 * 3 ) );
+    
+                $order_book->end_to_book = date("Y-m-d H:i:s", (strtotime ($end_to_book) + 60 * 60 * 3 ) );
+    
+                $order_book->status = 1;
+    
+                $order_book->save();
 
-            $order_book->status = 1;
+                return json_encode($order_book);
+            }
 
-            $order_book->save();
 
-            return json_encode($order_book);
+            return json_encode($book);
 
         }else{
 
+
+            // return response('Уже есть в базе данных.', 402);
             return json_encode(" Уже в базе данных");
 
         }
