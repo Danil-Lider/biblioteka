@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('order_books', function (Blueprint $table) {
+        Schema::table('order_items', function (Blueprint $table) {
 
             if (Schema::hasColumn('status', 'name')) {
 
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order_books');
+        Schema::dropIfExists('order_items');
     }
 };

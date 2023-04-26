@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class order_books extends Model
+class GetFreeTimeForOrder extends Model
 {
     use HasFactory;
-
-    protected $table = 'order_items';
+    protected $table = 'free_time_by_date';
 }

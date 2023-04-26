@@ -13,12 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('order_books', function (Blueprint $table) {
+        Schema::create('order_items', function (Blueprint $table) {
             $table->id();
             $table->string('book_id');
             $table->string('user_id');
-            $table->timestamp('start_to_book', $precision = 0);
-            $table->timestamp('end_to_book', $precision = 0);
+
+            $table->date('date_main', $precision = 0);
+            $table->integer('hour');
+            // $table->timestamp('start_to_book', $precision = 0);
+            // $table->timestamp('end_to_book', $precision = 0);
             $table->timestamps();
         });
     }
@@ -30,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order_books');
+        Schema::dropIfExists('order_items');
     }
 };

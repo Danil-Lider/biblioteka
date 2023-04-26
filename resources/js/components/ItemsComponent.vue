@@ -1,15 +1,11 @@
 <template>
     <div class="card-deck">
         <div v-for="item in data.data" class="card">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvGw-65vEUR3k8s60dEUFY_lHgAKxXMd-3uA&usqp=CAU" class="card-img-top" alt="...">
+            <img :src="item.image" class="card-img-top" alt="...">
             <div class="card-body">
-                <h5 class="card-title">{{ item.name }}</h5>
-                <p class="card-text">1 Автор: {{ item.author }}</p>
-                <p class="card-text">Жанр: {{ item.genre }}</p>
-                <p class="card-text">Издатель: {{ item.publisher }}</p>
+                <h5 class="card-title">Адрес: {{ item.name }}</h5>
             </div>
             <div class="card-footer">   
-                <small class="text-muted">Last updated 3 mins ago</small>
                 <div v-on:click="orderItem(item)" href="#" class="btn btn-primary">Забронировать</div>
             </div>
         </div>
@@ -23,7 +19,6 @@ export default {
 
             this.$emit('orderItem', item)
 
-            // console.log(item)
         }
     }
 }

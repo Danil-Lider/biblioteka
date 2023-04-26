@@ -27,9 +27,9 @@ class OrderBookController extends Controller
 
         $user_id = Auth::id();
        
-        $data = DB::table('order_books')
-        ->join('books', 'books.id', '=', 'order_books.book_id')
-        ->select('books.*', 'order_books.start_to_book','order_books.end_to_book')
+        $data = DB::table('order_items')
+        ->join('items', 'items.id', '=', 'order_items.book_id')
+        ->select('items.*', 'order_items.*')
         ->where('user_id', $user_id)
         ->paginate(10);
 
@@ -61,14 +61,18 @@ class OrderBookController extends Controller
 
         $in_database = order_books::where('book_id', $item_id)->first();
 
-        if(empty($in_database)){
+        //if(empty($in_database)){
 
             $book = Book::where('id', $item_id)->first();
 
-            if(!empty($request->data['end_to_book']) && Auth::check()){
+            if(Auth::check()){
                 
-                $start_to_book = $request->data['start_to_book'];
-                $end_to_book = $request->data['end_to_book'];
+                $modelData = $request->data['modelData'];
+                $hour = $request->data['hour_form'];
+                
+                // $end_to_book = $request->data['end_to_book'];
+
+
                 $user_id = Auth::id();
 
                 $order_book = new order_books;   
@@ -77,11 +81,12 @@ class OrderBookController extends Controller
     
                 $order_book->user_id = $user_id;
 
-                // ДОБАВЛЯЕМ 3 часа, т.к в базу попадает на 3 часа меньше, скорее всего как то сервак меняет.
+
+                $date_from_request = $modelData['year']  . '-' . $modelData['month'] . '-' . $modelData['day'];
     
-                $order_book->start_to_book = date("Y-m-d H:i:s", (strtotime ($start_to_book) + 60 * 60 * 3 ) );
-    
-                $order_book->end_to_book = date("Y-m-d H:i:s", (strtotime ($end_to_book) + 60 * 60 * 3 ) );
+                $order_book->date_main = date("Y-m-d", (strtotime ($date_from_request) ));
+
+                $order_book->hour = $hour;
     
                 $order_book->status = 1;
     
@@ -93,13 +98,9 @@ class OrderBookController extends Controller
 
             return json_encode($book);
 
-        }else{
 
-
-            // return response('Уже есть в базе данных.', 402);
-            return json_encode("К сожалению, книга уже забронирована    ");
-
-        }
+            
+        exit;
 
     }
 
@@ -143,8 +144,12 @@ class OrderBookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
+
+        ///echo $request->id;
+
+        order_books::find($request->id)->delete();
         //
     }
 }

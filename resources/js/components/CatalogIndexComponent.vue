@@ -14,7 +14,7 @@
             <ItemsComponent @orderItem='showModalBeforeOrder' ref="ItemsChildComponent" v-bind:data="data"></ItemsComponent>  
         </div>
 
-        <div v-if="data.links"> 
+        <div style="display: none;" v-if="data.links"> 
             <NavigationComponent v-bind:links="data.links"></NavigationComponent>
         </div>
 

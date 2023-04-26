@@ -1,12 +1,12 @@
 <template>
 <div  v-if="item">
-{{ item.name }}
+  
 </div>
 <div id="myModal1" class="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div v-if="item" class="modal-content" >
       <div class="modal-header">
-        <h5 class="modal-title">Забронировать книгу: {{ item.name }}</h5>
+        <h5 class="modal-title">Забронировать Мойку: {{ item.name }}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -22,13 +22,26 @@
 
             <div>Выберите дату </div>   
 
-            <Datepicker  v-model="date_datepicker" @update:modelValue="handleDate" locale="ru" :min-date="new Date()" range  ></Datepicker>
-
+            <Datepicker   :enable-time-picker="false"   v-model="date_datepicker" @update:modelValue="handleDate" locale="ru" :min-date="new Date()"   ></Datepicker>
             <!-- {{ item }} -->
 
-            <label>
-                Автор книги:   {{ item.author }}
-            </label>
+            <div v-if="item.hours" id="hours">
+
+              <h4 style="margin-top: 1rem;">Выберите  время</h4>
+
+              
+              <select v-model="hour_form" name="hour_main" id="">
+
+                <option :value="item"  v-for="(item, index) in item.hours">
+
+                  {{ item }}:00
+
+                </option>
+
+              </select>
+
+             
+            </div>
 
 
             <div  class="p-3 mb-2 bg-danger text-white" v-if="error">
@@ -70,7 +83,9 @@ export default {
       modelData: null,
       item: null,
       error: null,
-      success: null
+      success: null,
+      aviable_hour: null,
+      hour_form: null
     }
   },
   updated() {
@@ -81,47 +96,54 @@ export default {
 
     orderItem: function(item){
 
+
+      item.modelData = this.modelData;
+      item.hour_form = this.hour_form;
+
+      console.log(item)
+
       if(this.date_datepicker){
 
-        item.start_to_book = this.date_datepicker[0];
-        item.end_to_book = this.date_datepicker[1];
-
-      }
-
-      if(item.end_to_book){
+        // item.start_to_book = this.date_datepicker[0];
 
         axios.post('http://localhost:8080/books', {
 
-          data: item
+        data: item
 
         }).then(response => {
 
-          console.log(response);
+        console.log(response);
 
-            // console.log()
+          this.error = null;
 
-            this.error = null;
+          if(Number.isInteger(response.data.id)){
+              this.success = 'Успешно забронировано';
 
-            if(Number.isInteger(response.data.id)){
-                this.success = 'Успешно забронировано';
-            }else{
-                this.success = null
-                this.error = response.data
-            }
+              
+              this.item.hours = null;
+              // this.item = null;
+              this.item.modelData = null;
+              this.item.hour_form = null;
+              this.hour_form = null;
+              this.date_datepicker = null;
+
+
+          }else{
+              this.success = null
+              this.error = response.data
+          }
 
         }).catch(error => {
 
-          this.error = error;
+          this.error = 'Выберите время';
 
         });
 
-        this.error = null;
-
-      }else{
-
-        this.error = 'Нужно выбрать 2 даты !';
+        // this.error = null;
 
       }
+
+      
     },
 
     // IT FOR CATALOG INDEX COMPONENT
@@ -130,7 +152,45 @@ export default {
       this.getModal().show()
       this.success = null;
     },
-    handleDate:  (modelData) => {
+    handleDate:  function(modelData) {
+
+
+      this.error = null;
+
+      // Получаем доступное время на текущию дату
+      // нужна функция AJax которая запрости на эту дату возможность записи свободные ячейки 
+      const day = modelData.getDate();
+      const month = modelData.getMonth() + 1;
+      const year = modelData.getFullYear();
+
+
+      this.modelData = {
+          day: day,
+          month: month,
+          year:year
+      };
+
+      // console.log(day);
+
+
+      axios.get('http://localhost:8080/test', {
+        params: {
+          day: day,
+          month: month,
+          year:year
+        }
+      }).then(response => {
+
+        // пихаем в элемент часы
+
+          this.item.hours = response.data;
+
+      }).catch(error => {
+
+      });
+
+      
+
 
     },
     getModal: function(){
